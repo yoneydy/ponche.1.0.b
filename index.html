@@ -452,7 +452,7 @@ function renderStoreView() {
           html += `<tr class="row-missing">
             <td>${storeFirst ? store : ''}</td>
             <td class="cell-missing">${row.fecha}</td>
-            <td class="cell-missing">${diaSemana(row.fecha)}</td>
+            <td class="cell-missing">${diaSemana(row.fecha)}<span class="cell-edit" onclick="reportarFalta('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">🚩</span></td>
             <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','entrada')">+</span></td>
             <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','salida')">+</span></td>
             <td style="color:#dc2626">---</td>
@@ -753,6 +753,18 @@ function reportarProblema(idx) {
   if (!r) return;
   const desc = prompt('Describe el problema para ' + extractDate(r.fecha) + ':');
   if (!desc) return;
+  r.problema = desc.trim();
+  saveData();
+  init();
+}
+function reportarFalta(codigo, empleado, tienda, fecha) {
+  let r = allData.find(x => x.codigo === codigo && x.fecha === fecha);
+  if (!r) {
+    r = { codigo, empleado, tienda, fecha, entrada: '', salida: '' };
+    allData.push(r);
+  }
+  const desc = prompt('Motivo de la falta para ' + fecha + ':');
+  if (!desc) { if (!r.entrada && !r.salida && !r.problema) allData.pop(); return; }
   r.problema = desc.trim();
   saveData();
   init();
