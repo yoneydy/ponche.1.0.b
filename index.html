@@ -471,11 +471,11 @@ function renderStoreView() {
         html += `<tr${rowClass}>
           <td>${storeFirst ? store : ''}</td>
           <td>${extractDate(r.fecha)||''}</td>
-          <td>${diaSemana(r.fecha)}</td>
+          <td>${diaSemana(r.fecha)}${reportado ? '<span'+reportTitle+'>'+reportado+'</span>' : reportBtn}</td>
           <td><span class="cell-edit${!e?' cell-missing':''}" onclick="editField(${idx},'entrada')">${e||'--'}</span></td>
           <td><span class="cell-edit${!s?' cell-missing':''}" onclick="editField(${idx},'salida')">${s||'--'}</span></td>
           <td>${calcHoras(e,s)}</td>
-          <td><span class="badge ${getStatusBadge(st)}">${st}</span>${reportado ? '<span'+reportTitle+'>'+reportado+'</span>' : reportBtn}</td>
+          <td><span class="badge ${getStatusBadge(st)}">${st}</span></td>
         </tr>`;
         storeFirst = false;
       }
@@ -521,11 +521,11 @@ function renderEmployeeView() {
       html += `<tr${rowClass}>
         <td>${r.tienda||''}</td>
         <td>${extractDate(r.fecha)||''}</td>
-        <td>${diaSemana(r.fecha)}</td>
+        <td>${diaSemana(r.fecha)}${reportado ? '<span'+reportTitle+'>'+reportado+'</span>' : reportBtn}</td>
         <td><span class="cell-edit${!e?' cell-missing':''}" onclick="editField(${idx},'entrada')">${e||'--'}</span></td>
         <td><span class="cell-edit${!s?' cell-missing':''}" onclick="editField(${idx},'salida')">${s||'--'}</span></td>
         <td>${calcHoras(e,s)}</td>
-        <td><span class="badge ${getStatusBadge(st)}">${st}</span>${reportado ? '<span'+reportTitle+'>'+reportado+'</span>' : reportBtn}</td>
+        <td><span class="badge ${getStatusBadge(st)}">${st}</span></td>
       </tr>`;
     }
     html += '</tbody></table>';
