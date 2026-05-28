@@ -297,16 +297,16 @@ function diaSemana(v) {
   return dias[d.getDay()];
 }
 function getStatus(r) {
-  if (!r.fecha) return 'ƒö┤ Sin ponche';
+  if (!r.fecha) return '🔴 Sin ponche';
   const e = (r.entrada||'').trim(), s = (r.salida||'').trim();
-  if (!e && !s) return 'ƒö┤ Sin ponche';
-  if (e && s && e !== s) return 'Ô£à Completo';
-  return 'ÔÜá´©Å Incompleto';
+  if (!e && !s) return '🔴 Sin ponche';
+  if (e && s && e !== s) return '✅ Completo';
+  return '⚠️ Incompleto';
 }
 function getMonthKey(v) { const d = parseDateObj(v); return isNaN(d) ? '' : `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
 function getStatusBadge(s) {
-  if (s.includes('Ô£à')) return 'badge-success';
-  if (s.includes('ÔÜá´©Å')) return 'badge-warning';
+  if (s.includes('✅')) return 'badge-success';
+  if (s.includes('⚠️')) return 'badge-warning';
   return 'badge-danger';
 }
 function calcHoras(e, s) {
@@ -347,16 +347,16 @@ function renderDashboard() {
   let filtered = getVisibleData();
   if (selMonth) filtered = filtered.filter(r => getMonthKey(r.fecha) === selMonth);
   const total = filtered.length;
-  const completos = filtered.filter(r => getStatus(r).includes('Ô£à')).length;
-  const incompletos = filtered.filter(r => getStatus(r).includes('ÔÜá´©Å')).length;
-  const sinponche = filtered.filter(r => getStatus(r).includes('ƒö┤')).length;
+  const completos = filtered.filter(r => getStatus(r).includes('✅')).length;
+  const incompletos = filtered.filter(r => getStatus(r).includes('⚠️')).length;
+  const sinponche = filtered.filter(r => getStatus(r).includes('🔴')).length;
   const tiendas = new Set(filtered.map(r=>r.tienda)).size;
   const empleados = new Set(filtered.map(r=>r.codigo)).size;
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card"><div class="label">Registros</div><div class="value">${total}</div></div>
-    <div class="stat-card"><div class="label">Ô£à Completos</div><div class="value" style="color:#16a34a">${completos}</div></div>
-    <div class="stat-card"><div class="label">ÔÜá´©Å Incompletos</div><div class="value" style="color:#d97706">${incompletos}</div></div>
-    <div class="stat-card"><div class="label">ƒö┤ Sin ponche</div><div class="value" style="color:#dc2626">${sinponche}</div></div>
+    <div class="stat-card"><div class="label">✅ Completos</div><div class="value" style="color:#16a34a">${completos}</div></div>
+    <div class="stat-card"><div class="label">⚠️ Incompletos</div><div class="value" style="color:#d97706">${incompletos}</div></div>
+    <div class="stat-card"><div class="label">🔴 Sin ponche</div><div class="value" style="color:#dc2626">${sinponche}</div></div>
     <div class="stat-card"><div class="label">Tiendas</div><div class="value">${tiendas}</div></div>
     <div class="stat-card"><div class="label">Empleados</div><div class="value">${empleados}</div></div>`;
 }
@@ -430,9 +430,9 @@ function renderStoreView() {
         const st = getStatus(r);
         const e = r.entrada||'', s = r.salida||'';
         const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:#fee2e2"' : '';
-        const reportado = r.problema ? 'ÔÜá´©Å' : '';
+        const reportado = r.problema ? '⚠️' : '';
         const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
-        const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">ƒÜ®</span>';
+        const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">🚩</span>';
         html += `<tr${rowClass}>
           <td>${storeFirst ? store : ''}</td>
           <td>${extractDate(r.fecha)||''}</td>
@@ -472,7 +472,7 @@ function renderEmployeeView() {
     // Show detailed view for selected employee
     const emp = empMap[window._selectedEmp];
     if (!emp) { window._selectedEmp = null; return renderEmployeeView(); }
-    html += `<div style="margin-bottom:.5rem"><button class="btn btn-outline btn-sm" onclick="window._selectedEmp=null;init()">ÔåÉ Volver</button> <strong style="font-size:1rem">${emp.codigo} - ${emp.empleado}</strong></div>`;
+    html += `<div style="margin-bottom:.5rem"><button class="btn btn-outline btn-sm" onclick="window._selectedEmp=null;init()">← Volver</button> <strong style="font-size:1rem">${emp.codigo} - ${emp.empleado}</strong></div>`;
     html += '<table><thead><tr><th>Tienda</th><th>Fecha</th><th>Día</th><th>Entrada</th><th>Salida</th><th>Total</th><th>Estado</th></tr></thead><tbody>';
     const sorted = [...emp.records].sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
     for (const r of sorted) {
@@ -480,9 +480,9 @@ function renderEmployeeView() {
       const st = getStatus(r);
       const e = r.entrada||'', s = r.salida||'';
       const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:#fee2e2"' : '';
-      const reportado = r.problema ? 'ÔÜá´©Å' : '';
+      const reportado = r.problema ? '⚠️' : '';
       const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
-      const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">ƒÜ®</span>';
+      const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">🚩</span>';
       html += `<tr${rowClass}>
         <td>${r.tienda||''}</td>
         <td>${extractDate(r.fecha)||''}</td>
@@ -503,8 +503,8 @@ function renderEmployeeView() {
       let completos = 0, incompletos = 0, sinponche = 0;
       for (const r of emp.records) {
         const st = getStatus(r);
-        if (st.includes('Ô£à')) completos++;
-        else if (st.includes('ÔÜá´©Å')) incompletos++;
+        if (st.includes('✅')) completos++;
+        else if (st.includes('⚠️')) incompletos++;
         else sinponche++;
       }
       html += `<tr>
@@ -513,7 +513,7 @@ function renderEmployeeView() {
         <td>${emp.records.length}</td>
         <td><span class="badge badge-success">${completos}</span></td>
         <td>${incompletos > 0 ? `<span class="badge badge-warning">${incompletos}</span>` : '-'}</td>
-        <td>${userRole==='admin' ? `<button class="btn btn-outline btn-sm" onclick="deleteEmployee('${emp.codigo}','${emp.empleado.replace(/'/g,"\\'")}')" style="color:#dc2626">ƒùæ´©Å</button>` : ''}</td>
+        <td>${userRole==='admin' ? `<button class="btn btn-outline btn-sm" onclick="deleteEmployee('${emp.codigo}','${emp.empleado.replace(/'/g,"\\'")}')" style="color:#dc2626">🗑️</button>` : ''}</td>
       </tr>`;
     }
     html += '</tbody></table>';
