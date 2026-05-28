@@ -259,6 +259,10 @@ function loadData() {
   let fixed = 0;
   for (const r of allData) {
     if (!r.fecha) continue;
+    // Fix dates containing "NaN"
+    if (r.fecha.includes('NaN')) {
+      r.fecha = r.fecha.replace(/NaN/g, '01');
+    }
     const p = r.fecha.split('/');
     if (p.length === 3) {
       const y = +p[2];
@@ -473,7 +477,7 @@ function renderEmployeeView() {
     // Show detailed view for selected employee
     const emp = empMap[window._selectedEmp];
     if (!emp) { window._selectedEmp = null; return renderEmployeeView(); }
-    html += `<div style="margin-bottom:.5rem"><button class="btn btn-outline btn-sm" onclick="window._selectedEmp=null;init()">← Volver</button> <strong style="font-size:1rem">${emp.codigo} - ${emp.empleado}</strong></div>`;
+    html += `<div style="margin-bottom:.5rem"><button class="btn btn-outline btn-sm" onclick="window._selectedEmp=null;init()">← Volver</button> <strong style="font-size:1rem">${emp.codigo} - ${emp.empleado}</strong>${userRole==='admin' ? `<button class="btn btn-outline btn-sm" onclick="deleteEmployee('${emp.codigo}','${emp.empleado.replace(/'/g,"\\'")}')" style="color:#dc2626;margin-left:.5rem">🗑️ Eliminar empleado</button>` : ''}</div>`;
     html += '<table><thead><tr><th>Tienda</th><th>Fecha</th><th>Día</th><th>Entrada</th><th>Salida</th><th>Total</th><th>Estado</th></tr></thead><tbody>';
     const sorted = [...emp.records].sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
     for (const r of sorted) {
@@ -608,6 +612,8 @@ function confirmImport() {
       if (!isNaN(d)) return `${String(d.getUTCDate()).padStart(2,'0')}/${String(d.getUTCMonth()+1).padStart(2,'0')}/${d.getUTCFullYear()}`;
     }
     if (typeof v === 'string') {
+      // Skip if value is literally "NaN"
+      if (v === 'NaN' || v === '#N/A' || v === '#REF!' || v === '#VALUE!' || v === '#DIV/0!') return '';
       const p = v.split(/[\/\-]/);
       if (p.length === 3) {
         const ex = s => { const m = String(s).match(/\d+/); return m ? +m[0] : NaN; };
