@@ -414,7 +414,7 @@ function renderStoreView() {
   }
 
   const sortedStores = Object.keys(groups).sort();
-  let html = '<table><thead><tr><th>Tienda</th><th>Fecha</th><th>Día</th><th>Entrada</th><th>Salida</th><th>Total</th><th>Estado</th></tr></thead><tbody>';
+  let html = '<table><thead><tr><th>Tienda</th><th>Fecha</th><th>Día</th><th>Entrada</th><th>Salida</th><th>Total</th><th>Estado</th><th>Reporte</th></tr></thead><tbody>';
   for (const store of sortedStores) {
     const emps = Object.keys(groups[store]).sort();
     let storeFirst = true;
@@ -426,7 +426,7 @@ function renderStoreView() {
       html += `<tr style="background:#eef2ff"><td colspan="6" style="padding:.4rem .65rem;font-weight:600;color:#4f46e5;font-size:.85rem">${emp} - ${empInfo.empleado||''}${store ? ' | ' + store : ''}</td>
         <td style="text-align:right;padding:.4rem .65rem"><button class="btn btn-outline btn-sm" onclick="exportEmp('${emp}')" title="Exportar empleado">📤</button></td></tr>`;
       // Column sub-header per employee
-      html += `<tr style="background:#f8fafc"><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Tienda</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Fecha</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Día</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Entrada</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Salida</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Total</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Estado</td></tr>`;
+      html += `<tr style="background:#f8fafc"><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Tienda</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Fecha</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Día</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Entrada</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Salida</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Total</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Estado</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Reporte</td></tr>`;
 
       let rows = [];
       if (selMonth) {
@@ -452,11 +452,12 @@ function renderStoreView() {
           html += `<tr class="row-missing">
             <td>${storeFirst ? store : ''}</td>
             <td class="cell-missing">${row.fecha}</td>
-            <td class="cell-missing">${diaSemana(row.fecha)}<span class="cell-edit" onclick="reportarFalta('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">💬</span></td>
+            <td class="cell-missing">${diaSemana(row.fecha)}</td>
             <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','entrada')">+</span></td>
             <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','salida')">+</span></td>
             <td style="color:#dc2626">---</td>
             <td><span class="badge badge-danger">Sin ponche</span></td>
+            <td><span class="cell-edit" onclick="reportarFalta('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}')" style="color:#2563eb;font-size:.7rem">Reporte</span></td>
           </tr>`;
           storeFirst = false; continue;
         }
@@ -468,15 +469,16 @@ function renderStoreView() {
         const reportado = r.problema ? '⚠️' : '';
         const reportText = r.problema ? '<span style="font-size:.65rem;color:#64748b;margin-left:.2rem">'+r.problema.substring(0,25)+(r.problema.length>25?'…':'')+'</span>' : '';
         const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
-        const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">💬</span>';
+        const reportCell = r.problema ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#2563eb;font-size:.7rem">Reporte</span>';
         html += `<tr${rowClass}>
           <td>${storeFirst ? store : ''}</td>
           <td>${extractDate(r.fecha)||''}</td>
-          <td>${diaSemana(r.fecha)}${reportado ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : reportBtn}</td>
+          <td>${diaSemana(r.fecha)}</td>
           <td><span class="cell-edit${!e?' cell-missing':''}" onclick="editField(${idx},'entrada')">${e||'--'}</span></td>
           <td><span class="cell-edit${!s?' cell-missing':''}" onclick="editField(${idx},'salida')">${s||'--'}</span></td>
           <td>${calcHoras(e,s)}</td>
           <td><span class="badge ${getStatusBadge(st)}">${st}</span></td>
+          <td>${reportCell}</td>
         </tr>`;
         storeFirst = false;
       }
@@ -509,7 +511,7 @@ function renderEmployeeView() {
     const emp = empMap[window._selectedEmp];
     if (!emp) { window._selectedEmp = null; return renderEmployeeView(); }
     html += `<div style="margin-bottom:.5rem"><button class="btn btn-outline btn-sm" onclick="window._selectedEmp=null;init()">← Volver</button> <strong style="font-size:1rem">${emp.codigo} - ${emp.empleado}</strong>${userRole==='admin' ? `<button class="btn btn-outline btn-sm" onclick="deleteEmployee('${emp.codigo}','${emp.empleado.replace(/'/g,"\\'")}')" style="color:#dc2626;margin-left:.5rem">🗑️ Eliminar empleado</button>` : ''}</div>`;
-    html += '<table><thead><tr><th>Tienda</th><th>Fecha</th><th>Día</th><th>Entrada</th><th>Salida</th><th>Total</th><th>Estado</th></tr></thead><tbody>';
+    html += '<table><thead><tr><th>Tienda</th><th>Fecha</th><th>Día</th><th>Entrada</th><th>Salida</th><th>Total</th><th>Estado</th><th>Reporte</th></tr></thead><tbody>';
     const sorted = [...emp.records].sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
     for (const r of sorted) {
       const idx = allData.indexOf(r);
@@ -519,14 +521,17 @@ function renderEmployeeView() {
       const reportado = r.problema ? '⚠️' : '';
       const reportText = r.problema ? '<span style="font-size:.65rem;color:#64748b;margin-left:.2rem">'+r.problema.substring(0,25)+(r.problema.length>25?'…':'')+'</span>' : '';
       const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
-      const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">💬</span>';
+      const reportCell = r.problema ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#2563eb;font-size:.7rem">Reporte</span>';
       html += `<tr${rowClass}>
         <td>${r.tienda||''}</td>
         <td>${extractDate(r.fecha)||''}</td>
-        <td>${diaSemana(r.fecha)}${reportado ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : reportBtn}</td>
+        <td>${diaSemana(r.fecha)}</td>
         <td><span class="cell-edit${!e?' cell-missing':''}" onclick="editField(${idx},'entrada')">${e||'--'}</span></td>
         <td><span class="cell-edit${!s?' cell-missing':''}" onclick="editField(${idx},'salida')">${s||'--'}</span></td>
         <td>${calcHoras(e,s)}</td>
+        <td><span class="badge ${getStatusBadge(st)}">${st}</span></td>
+        <td>${reportCell}</td>
+      </tr>`;
         <td><span class="badge ${getStatusBadge(st)}">${st}</span></td>
       </tr>`;
     }
