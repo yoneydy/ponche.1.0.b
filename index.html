@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -80,20 +80,20 @@ tr:hover td{background:#f8fafc}
 
 <div id="login-screen" class="login-container">
   <div class="login-card">
-    <h1>📋 Control de Ponches <span style="font-size:.7rem;background:#dbeafe;color:#2563eb;padding:.15rem .5rem;border-radius:999px;font-weight:600">1.0</span></h1>
-    <p class="subtitle">Inicia sesión para continuar</p>
+    <h1>­ƒôï Control de Ponches</h1>
+    <p class="subtitle">Inicia sesi├│n para continuar</p>
     <div style="display:flex;gap:.5rem;margin-bottom:1rem">
       <button id="login-admin-btn" class="btn btn-primary" onclick="showLoginForm('admin')" style="flex:1">Admin</button>
       <button id="login-emp-btn" class="btn btn-outline" onclick="showLoginForm('employee')" style="flex:1">Empleado</button>
     </div>
     <div id="login-form">
-      <input id="login-password" type="password" placeholder="Contraseña de administrador" onkeydown="if(event.key==='Enter')doLogin()">
+      <input id="login-password" type="password" placeholder="Contrase├▒a de administrador" onkeydown="if(event.key==='Enter')doLogin()">
       <div id="login-employee-select" class="hidden">
         <input id="login-employee-search" type="text" placeholder="Buscar nombre..." oninput="filterEmployeeNames()" style="width:100%;padding:.75rem 1rem;border:1.5px solid #e2e8f0;border-radius:.65rem;font-size:.95rem;margin-bottom:.5rem;outline:none">
         <select id="login-employee-name" style="width:100%;padding:.75rem 1rem;border:1.5px solid #e2e8f0;border-radius:.65rem;font-size:.95rem;margin-bottom:.75rem;outline:none;background:#fff">
           <option value="">Selecciona tu nombre</option>
         </select>
-        <input id="login-employee-code" type="password" placeholder="Número de tarjeta" onkeydown="if(event.key==='Enter')doLogin()">
+        <input id="login-employee-code" type="password" placeholder="N├║mero de tarjeta" onkeydown="if(event.key==='Enter')doLogin()">
       </div>
       <button class="btn btn-primary" onclick="doLogin()" style="margin-top:.5rem">Entrar</button>
       <div id="login-error" class="error"></div>
@@ -104,34 +104,35 @@ tr:hover td{background:#f8fafc}
 <div id="app" class="app-container hidden">
   <div class="topbar">
     <div style="display:flex;align-items:center;gap:.5rem">
-      <h2>📋 Control de Ponches <span style="font-size:.65rem;background:#dbeafe;color:#2563eb;padding:.15rem .5rem;border-radius:999px;font-weight:600">1.0</span></h2>
+      <h2>­ƒôï Control de Ponches</h2>
       <span id="user-badge" class="badge"></span>
     </div>
     <div class="topbar-actions">
-      <button class="btn btn-outline btn-sm admin-only" onclick="showUploadModal()">📥 Importar</button>
-      <button class="btn btn-outline btn-sm" onclick="exportExcel()">📤 Exportar</button>
-      <button class="btn btn-outline btn-sm admin-only" onclick="showAddModal()">➕ Agregar</button>
+      <button class="btn btn-outline btn-sm admin-only" onclick="showUploadModal()">­ƒôÑ Importar</button>
+      <button class="btn btn-outline btn-sm" onclick="exportExcel()">­ƒôñ Exportar</button>
+      <button class="btn btn-outline btn-sm admin-only" onclick="showAddModal()">Ô×ò Agregar</button>
       <button class="btn btn-outline btn-sm admin-only" onclick="mergeDuplicados()" style="color:#dc2626">🔀 Unificar días</button>
       <button class="btn btn-outline btn-sm admin-only" onclick="backupData()">💾 Backup</button>
       <button class="btn btn-outline btn-sm admin-only" onclick="document.getElementById('restore-input').click()">📂 Restore</button>
       <input id="restore-input" type="file" accept=".json" onchange="restoreData(this.files[0])" style="display:none">
+      <button class="btn btn-outline btn-sm admin-only" onclick="syncToGitHub()">☁️ Subir datos</button>
       <button class="btn btn-outline btn-sm" onclick="logout()" style="color:#dc2626">🚪 Salir</button>
     </div>
   </div>
 
   <div class="filters">
     <select id="view-select" onchange="init()" class="admin-only">
-      <option value="store">🏪 Por tienda</option>
-      <option value="employee">👤 Por empleado</option>
+      <option value="store">­ƒÅ¬ Por tienda</option>
+      <option value="employee">­ƒæñ Por empleado</option>
     </select>
     <select id="month-filter" onchange="init()">
       <option value="">Todos los meses</option>
     </select>
     <div class="search-wrap">
-      <span>🔍</span>
-      <input id="search-input" placeholder="Buscar por tienda, nombre, código..." oninput="debouncedSearch()">
+      <span>­ƒöì</span>
+      <input id="search-input" placeholder="Buscar por tienda, nombre, c├│digo..." oninput="debouncedSearch()">
     </div>
-    <button class="btn btn-outline btn-sm admin-only" onclick="exportExcel()">📥 Exportar Todo</button>
+    <button class="btn btn-outline btn-sm admin-only" onclick="exportExcel()">­ƒôÑ Exportar Todo</button>
   </div>
 
   <div class="stats-grid" id="stats-grid"></div>
@@ -140,7 +141,7 @@ tr:hover td{background:#f8fafc}
 <!-- Modals -->
 <div id="upload-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeModal('upload-modal')">
   <div class="modal-content">
-    <h3>📥 Importar Excel / CSV</h3>
+    <h3>­ƒôÑ Importar Excel / CSV</h3>
     <div id="upload-body">
       <input type="file" id="file-input" accept=".xlsx,.xls,.csv" onchange="handleFile(this.files[0])">
     </div>
@@ -151,8 +152,8 @@ tr:hover td{background:#f8fafc}
 
 <div id="add-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeModal('add-modal')">
   <div class="modal-content">
-    <h3>➕ Agregar registro</h3>
-    <input id="add-codigo" placeholder="Código empleado">
+    <h3>Ô×ò Agregar registro</h3>
+    <input id="add-codigo" placeholder="C├│digo empleado">
     <input id="add-empleado" placeholder="Nombre">
     <input id="add-tienda" placeholder="Tienda">
     <input id="add-fecha" type="date">
@@ -202,12 +203,12 @@ function doLogin() {
   const role = document.getElementById('login-admin-btn').classList.contains('btn-primary') ? 'admin' : 'employee';
   if (role === 'admin') {
     const pw = document.getElementById('login-password').value;
-    if (pw !== 'admin123') return document.getElementById('login-error').textContent = 'Contraseña incorrecta';
+    if (pw !== 'admin123') return document.getElementById('login-error').textContent = 'Contrase├▒a incorrecta';
     userRole = 'admin'; userCodigo = null;
   } else {
     const name = document.getElementById('login-employee-name').value;
     const code = document.getElementById('login-employee-code').value;
-    if (!name || !code) return document.getElementById('login-error').textContent = 'Selecciona tu nombre y escribe tu número de tarjeta';
+    if (!name || !code) return document.getElementById('login-error').textContent = 'Selecciona tu nombre y escribe tu n├║mero de tarjeta';
     const match = allData.find(r => r.empleado === name && r.codigo === code);
     if (!match) return document.getElementById('login-error').textContent = 'Nombre o tarjeta incorrectos';
     userRole = 'employee'; userCodigo = code;
@@ -219,7 +220,20 @@ function doLogin() {
   init();
 }
 
-// ===================== BACKUP / RESTORE =====================
+function logout() {
+  userRole = null; userCodigo = null;
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('login-password').value = '';
+  document.getElementById('login-employee-code').value = '';
+  document.getElementById('login-error').textContent = '';
+  document.getElementById('login-admin-btn').className = 'btn btn-primary';
+  document.getElementById('login-emp-btn').className = 'btn btn-outline';
+  document.getElementById('login-password').classList.remove('hidden');
+  document.getElementById('login-employee-select').classList.add('hidden');
+}
+
+// ===================== BACKUP / RESTORE / SYNC =====================
 function backupData() {
   const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -243,7 +257,527 @@ function restoreData(file) {
   };
   reader.readAsText(file);
 }
+function getGitHubToken() {
+  let token = localStorage.getItem('gh_token');
+  if (!token) { token = prompt('Ingresa tu token de GitHub (solo una vez, se guarda localmente):'); if (token) localStorage.setItem('gh_token', token); }
+  return token;
+}
+function syncToGitHub() {
+  if (location.protocol === 'file:') {
+    alert('Esta función solo funciona desde la página publicada.\n\nAbre este enlace en Edge:\nhttps://yoneydy.github.io/ponche.1.0.b/\n\nAhí podrás subir los datos a la nube.');
+    return;
+  }
+  const token = getGitHubToken();
+  if (!token) return alert('Token requerido para sincronizar');
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(allData, null, 2))));
+  const url = 'https://api.github.com/repos/yoneydy/ponche.1.0.b/contents/data/ponches.json';
+  fetch(url, { headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' } })
+    .then(r => r.json())
+    .then(existing => {
+      const body = { message: 'sync data ' + new Date().toISOString(), content: content };
+      if (existing.sha) body.sha = existing.sha;
+      return fetch(url, { method: 'PUT', headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' }, body: JSON.stringify(body) });
+    })
+    .then(r => r.json())
+    .then(res => {
+      if (res.content) alert('✅ Datos subidos a GitHub exitosamente');
+      else alert('❌ Error: ' + (res.message || 'desconocido'));
+    })
+    .catch(e => alert('❌ Error de conexión: ' + e.message + '\n\nAsegúrate de abrir la página desde:\nhttps://yoneydy.github.io/ponche.1.0.b/'));
+}
+function loadFromGitHub() {
+  if (location.protocol === 'file:') return;
+  fetch('https://api.github.com/repos/yoneydy/ponche.1.0.b/contents/data/ponches.json', { headers: { Accept: 'application/vnd.github+json' } })
+    .then(r => { if (!r.ok) throw new Error('no data'); return r.json(); })
+    .then(resp => {
+      const json = JSON.parse(decodeURIComponent(escape(atob(resp.content))));
+      if (Array.isArray(json) && json.length > 0) { allData = json; saveData(); }
+    }).catch(e => {});
+}
 
+// ===================== INIT =====================
+function getVisibleData() {
+  return userRole === 'employee' && userCodigo ? allData.filter(r => r.codigo === userCodigo) : allData;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadFromGitHub();
+  loadData();
+  document.getElementById('login-screen').classList.remove('hidden');
+  showLoginForm('admin');
+});
+
+// ===================== STORAGE =====================
+function loadData() {
+  try { allData = JSON.parse(localStorage.getItem('ponchesData')) || []; } catch(e) { allData = []; }
+  const curY = new Date().getFullYear();
+  let fixed = 0;
+  for (const r of allData) {
+    if (!r.fecha) continue;
+    const p = r.fecha.split('/');
+    if (p.length === 3) {
+      const y = +p[2];
+      if (y >= 100 && y < 1000 && y === Math.floor(curY / 10)) { p[2] = String(curY); r.fecha = p.join('/'); fixed++; }
+      else if (y < 100) { p[2] = String(2000 + y); r.fecha = p.join('/'); fixed++; }
+    }
+  }
+  if (fixed) { saveData(); console.log('Fechas reparadas:', fixed); }
+}
+function saveData() { localStorage.setItem('ponchesData', JSON.stringify(allData)); }
+
+// ===================== HELPERS =====================
+
+
+function parseDateObj(v) {
+  if (!v) return new Date(NaN);
+  if (v instanceof Date && !isNaN(v)) return v;
+  if (typeof v === 'number') { const d = new Date((v - 25569) * 86400 * 1000); if (!isNaN(d)) return d; }
+  if (typeof v === 'string') {
+    const p = v.split(/[\/\-]/);
+    if (p.length === 3) {
+      let d, m, y;
+      if (v.includes('/')) { d=+p[0]; m=+p[1]; y=+p[2]; } else { y=+p[0]; m=+p[1]; d=+p[2]; }
+      if (isNaN(y)) y = new Date().getFullYear();
+      if (y < 100) y += 2000;
+      if (y >= 100 && y < 1000 && y === Math.floor(new Date().getFullYear() / 10)) y = new Date().getFullYear();
+      if (!isNaN(d) && !isNaN(m)) return new Date(y, m-1, d);
+    }
+  }
+  const d = new Date(v); return isNaN(d) ? new Date(NaN) : d;
+}
+function extractDate(v) { const d = parseDateObj(v); return isNaN(d) ? (v||'') : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }
+function diaSemana(v) {
+  const d = parseDateObj(v);
+  if (isNaN(d)) return '';
+  const dias = ['Dom','Lun','Mar','Mi├®','Jue','Vie','S├íb'];
+  return dias[d.getDay()];
+}
+function getStatus(r) {
+  if (!r.fecha) return '­ƒö┤ Sin ponche';
+  const e = (r.entrada||'').trim(), s = (r.salida||'').trim();
+  if (!e && !s) return '­ƒö┤ Sin ponche';
+  if (e && s && e !== s) return 'Ô£à Completo';
+  return 'ÔÜá´©Å Incompleto';
+}
+function getMonthKey(v) { const d = parseDateObj(v); return isNaN(d) ? '' : `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
+function getStatusBadge(s) {
+  if (s.includes('Ô£à')) return 'badge-success';
+  if (s.includes('ÔÜá´©Å')) return 'badge-warning';
+  return 'badge-danger';
+}
+function calcHoras(e, s) {
+  if (!e || !s) return '---';
+  const [eh, em] = e.split(':').map(Number);
+  const [sh, sm] = s.split(':').map(Number);
+  if (isNaN(eh)||isNaN(em)||isNaN(sh)||isNaN(sm)) return '---';
+  let min = (sh*60+sm) - (eh*60+em);
+  if (min < 0) min += 1440;
+  const h = Math.floor(min/60), m = min%60;
+  return h + 'h ' + m + 'm';
+}
+
+// ===================== INIT =====================
+function init() {
+  const data = getVisibleData();
+  const sel = document.getElementById('month-filter');
+  const opts = new Set();
+  for (const r of data) { const mk = getMonthKey(r.fecha); if (mk) opts.add(mk); }
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Todos los meses</option>';
+  for (const o of [...opts].sort()) sel.innerHTML += `<option value="${o}" ${o===cur?'selected':''}>${o}</option>`;
+
+  renderDashboard();
+  const view = document.getElementById('view-select').value;
+  if (view === 'store') renderStoreView();
+  else renderEmployeeView();
+}
+
+function debouncedSearch() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => init(), 200);
+}
+
+// ===================== DASHBOARD =====================
+function renderDashboard() {
+  const selMonth = document.getElementById('month-filter').value;
+  let filtered = getVisibleData();
+  if (selMonth) filtered = filtered.filter(r => getMonthKey(r.fecha) === selMonth);
+  const total = filtered.length;
+  const completos = filtered.filter(r => getStatus(r).includes('Ô£à')).length;
+  const incompletos = filtered.filter(r => getStatus(r).includes('ÔÜá´©Å')).length;
+  const sinponche = filtered.filter(r => getStatus(r).includes('­ƒö┤')).length;
+  const tiendas = new Set(filtered.map(r=>r.tienda)).size;
+  const empleados = new Set(filtered.map(r=>r.codigo)).size;
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="label">Registros</div><div class="value">${total}</div></div>
+    <div class="stat-card"><div class="label">Ô£à Completos</div><div class="value" style="color:#16a34a">${completos}</div></div>
+    <div class="stat-card"><div class="label">ÔÜá´©Å Incompletos</div><div class="value" style="color:#d97706">${incompletos}</div></div>
+    <div class="stat-card"><div class="label">­ƒö┤ Sin ponche</div><div class="value" style="color:#dc2626">${sinponche}</div></div>
+    <div class="stat-card"><div class="label">Tiendas</div><div class="value">${tiendas}</div></div>
+    <div class="stat-card"><div class="label">Empleados</div><div class="value">${empleados}</div></div>`;
+}
+
+// ===================== STORE VIEW =====================
+function renderStoreView() {
+  const q = (document.getElementById('search-input').value||'').toLowerCase();
+  const selMonth = document.getElementById('month-filter').value;
+  let filtered = getVisibleData();
+  if (selMonth) filtered = filtered.filter(r => getMonthKey(r.fecha) === selMonth);
+  if (q) filtered = filtered.filter(r => (r.empleado||'').toLowerCase().includes(q) || (r.codigo||'').includes(q) || (r.tienda||'').toLowerCase().includes(q));
+
+  const groups = {};
+  for (const r of filtered) {
+    const store = r.tienda || 'Sin tienda';
+    if (!groups[store]) groups[store] = {};
+    const emp = r.codigo || '???';
+    if (!groups[store][emp]) groups[store][emp] = { empleado: r.empleado||'', records: [] };
+    groups[store][emp].records.push(r);
+  }
+
+  const sortedStores = Object.keys(groups).sort();
+  let html = '<table><thead><tr><th>Tienda</th><th>Fecha</th><th>D├¡a</th><th>Entrada</th><th>Salida</th><th>Total</th><th>Estado</th></tr></thead><tbody>';
+  for (const store of sortedStores) {
+    const emps = Object.keys(groups[store]).sort();
+    let storeFirst = true;
+    for (const emp of emps) {
+      const empInfo = groups[store][emp];
+      const sortedRecs = [...empInfo.records].sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
+
+      // Employee header in blue
+      html += `<tr style="background:#eef2ff"><td colspan="6" style="padding:.4rem .65rem;font-weight:600;color:#4f46e5;font-size:.85rem">${emp} - ${empInfo.empleado||''}${store ? ' | ' + store : ''}</td>
+        <td style="text-align:right;padding:.4rem .65rem"><button class="btn btn-outline btn-sm" onclick="exportEmp('${emp}')" title="Exportar empleado">­ƒôñ</button></td></tr>`;
+      // Column sub-header per employee
+      html += `<tr style="background:#f8fafc"><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Tienda</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Fecha</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">D├¡a</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Entrada</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Salida</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Total</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Estado</td></tr>`;
+
+      let rows = [];
+      if (selMonth) {
+        const [y,m] = selMonth.split('-');
+        const totalDays = new Date(+y, +m, 0).getDate();
+        const existingMap = {};
+        for (const r of sortedRecs) {
+          const d = parseDateObj(r.fecha);
+          if (!isNaN(d)) existingMap[d.getDate()] = r;
+        }
+        for (let day = 1; day <= totalDays; day++) {
+          const dd = new Date(+y, +m-1, day);
+          if (dd.getDay() === 0) continue;
+          if (existingMap[day]) rows.push({ type: 'record', data: existingMap[day] });
+          else rows.push({ type: 'missing', day, fecha: `${String(day).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}` });
+        }
+      } else {
+        rows = sortedRecs.map(r => ({ type: 'record', data: r }));
+      }
+
+      for (const row of rows) {
+        if (row.type === 'missing') {
+          html += `<tr class="row-missing">
+            <td>${storeFirst ? store : ''}</td>
+            <td class="cell-missing">${row.fecha}</td>
+            <td class="cell-missing">${diaSemana(row.fecha)}</td>
+            <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','entrada')">+</span></td>
+            <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','salida')">+</span></td>
+            <td style="color:#dc2626">---</td>
+            <td><span class="badge badge-danger">Sin ponche</span></td>
+          </tr>`;
+          storeFirst = false; continue;
+        }
+        const r = row.data;
+        const idx = allData.indexOf(r);
+        const st = getStatus(r);
+        const e = r.entrada||'', s = r.salida||'';
+        const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:#fee2e2"' : '';
+        const reportado = r.problema ? 'ÔÜá´©Å' : '';
+        const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
+        const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">­ƒÜ®</span>';
+        html += `<tr${rowClass}>
+          <td>${storeFirst ? store : ''}</td>
+          <td>${extractDate(r.fecha)||''}</td>
+          <td>${diaSemana(r.fecha)}</td>
+          <td><span class="cell-edit${!e?' cell-missing':''}" onclick="editField(${idx},'entrada')">${e||'--'}</span></td>
+          <td><span class="cell-edit${!s?' cell-missing':''}" onclick="editField(${idx},'salida')">${s||'--'}</span></td>
+          <td>${calcHoras(e,s)}</td>
+          <td><span class="badge ${getStatusBadge(st)}">${st}</span>${reportado ? '<span'+reportTitle+'>'+reportado+'</span>' : reportBtn}</td>
+        </tr>`;
+        storeFirst = false;
+      }
+    }
+  }
+
+  html += '</tbody></table>';
+  if (Object.keys(groups).length === 0) html = '<div style="padding:2rem;text-align:center;color:#94a3b8">Sin registros para esta vista.</div>';
+  document.getElementById('table-wrap').innerHTML = html;
+}
+
+// ===================== EMPLOYEE VIEW =====================
+function renderEmployeeView() {
+  const q = (document.getElementById('search-input').value||'').toLowerCase();
+  const selMonth = document.getElementById('month-filter').value;
+  let filtered = getVisibleData();
+  if (selMonth) filtered = filtered.filter(r => getMonthKey(r.fecha) === selMonth);
+  if (q) filtered = filtered.filter(r => (r.empleado||'').toLowerCase().includes(q) || (r.codigo||'').includes(q) || (r.tienda||'').toLowerCase().includes(q));
+
+  const empMap = {};
+  for (const r of filtered) {
+    const key = r.codigo || '???';
+    if (!empMap[key]) empMap[key] = { codigo: key, empleado: r.empleado||'', records: [] };
+    empMap[key].records.push(r);
+  }
+
+  let html = '';
+  if (window._selectedEmp) {
+    // Show detailed view for selected employee
+    const emp = empMap[window._selectedEmp];
+    if (!emp) { window._selectedEmp = null; return renderEmployeeView(); }
+    html += `<div style="margin-bottom:.5rem"><button class="btn btn-outline btn-sm" onclick="window._selectedEmp=null;init()">ÔåÉ Volver</button> <strong style="font-size:1rem">${emp.codigo} - ${emp.empleado}</strong></div>`;
+    html += '<table><thead><tr><th>Tienda</th><th>Fecha</th><th>D├¡a</th><th>Entrada</th><th>Salida</th><th>Total</th><th>Estado</th></tr></thead><tbody>';
+    const sorted = [...emp.records].sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
+    for (const r of sorted) {
+      const idx = allData.indexOf(r);
+      const st = getStatus(r);
+      const e = r.entrada||'', s = r.salida||'';
+      const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:#fee2e2"' : '';
+      const reportado = r.problema ? 'ÔÜá´©Å' : '';
+      const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
+      const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">­ƒÜ®</span>';
+      html += `<tr${rowClass}>
+        <td>${r.tienda||''}</td>
+        <td>${extractDate(r.fecha)||''}</td>
+        <td>${diaSemana(r.fecha)}</td>
+        <td><span class="cell-edit${!e?' cell-missing':''}" onclick="editField(${idx},'entrada')">${e||'--'}</span></td>
+        <td><span class="cell-edit${!s?' cell-missing':''}" onclick="editField(${idx},'salida')">${s||'--'}</span></td>
+        <td>${calcHoras(e,s)}</td>
+        <td><span class="badge ${getStatusBadge(st)}">${st}</span>${reportado ? '<span'+reportTitle+'>'+reportado+'</span>' : reportBtn}</td>
+      </tr>`;
+    }
+    html += '</tbody></table>';
+  } else {
+    // Summary view
+    const sorted = Object.values(empMap).sort((a,b) => a.empleado.localeCompare(b.empleado));
+    html = '<table><thead><tr><th>Empleado</th><th>C├│digo</th><th>Registros</th><th>Completos</th><th>Incompletos</th><th></th></tr></thead><tbody>';
+
+    for (const emp of sorted) {
+      let completos = 0, incompletos = 0, sinponche = 0;
+      for (const r of emp.records) {
+        const st = getStatus(r);
+        if (st.includes('Ô£à')) completos++;
+        else if (st.includes('ÔÜá´©Å')) incompletos++;
+        else sinponche++;
+      }
+      html += `<tr>
+        <td><a href="#" onclick="window._selectedEmp='${emp.codigo}';init();return false" style="color:#2563eb;text-decoration:none;font-weight:600">${emp.empleado}</a></td>
+        <td>${emp.codigo}</td>
+        <td>${emp.records.length}</td>
+        <td><span class="badge badge-success">${completos}</span></td>
+        <td>${incompletos > 0 ? `<span class="badge badge-warning">${incompletos}</span>` : '-'}</td>
+        <td>${userRole==='admin' ? `<button class="btn btn-outline btn-sm" onclick="deleteEmployee('${emp.codigo}','${emp.empleado.replace(/'/g,"\\'")}')" style="color:#dc2626">­ƒùæ´©Å</button>` : ''}</td>
+      </tr>`;
+    }
+    html += '</tbody></table>';
+  }
+
+  document.getElementById('table-wrap').innerHTML = html;
+  if ((!window._selectedEmp && sorted.length === 0) || (window._selectedEmp && !empMap[window._selectedEmp])) {
+    document.getElementById('table-wrap').innerHTML = '<div style="padding:2rem;text-align:center;color:#94a3b8">Sin registros para esta vista.</div>';
+  }
+}
+
+function deleteEmployee(codigo, empleado) {
+  if (!confirm(`Eliminar TODOS los registros de ${empleado} (c├│digo: ${codigo})?`)) return;
+  if (!confirm('Esta acci├│n no se puede deshacer. Continuar?')) return;
+  const antes = allData.length;
+  allData = allData.filter(r => r.codigo !== codigo);
+  saveData();
+  const eliminados = antes - allData.length;
+  alert(`Empleado eliminado. ${eliminados} registros borrados.`);
+  if (window._selectedEmp === codigo) window._selectedEmp = null;
+  init();
+}
+
+// ===================== UPLOAD =====================
+function showUploadModal() {
+  document.getElementById('upload-body').innerHTML = '<input type="file" id="file-input" accept=".xlsx,.xls,.csv" onchange="handleFile(this.files[0])">';
+  document.getElementById('map-config').innerHTML = '';
+  document.getElementById('upload-actions').innerHTML = '<button class="btn btn-outline" onclick="closeModal(\'upload-modal\')">Cancelar</button>';
+  document.getElementById('upload-modal').classList.remove('hidden');
+}
+
+function handleFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, { type: 'array', cellDates: true });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const json = XLSX.utils.sheet_to_json(ws, { defval: '' });
+      if (json.length === 0) return alert('El archivo est├í vac├¡o');
+      uploadedHeaders = Object.keys(json[0]);
+      uploadedRows = json;
+      document.getElementById('upload-body').innerHTML = `<div style="font-size:.8rem;color:#64748b;margin-bottom:.5rem">Archivo: ${file.name} (${json.length} filas)</div>`;
+      document.getElementById('map-config').innerHTML = `<div style="font-size:.75rem;color:#64748b;margin-bottom:.5rem">Columnas detectadas: ${uploadedHeaders.join(', ')}</div>`;
+      document.getElementById('upload-actions').innerHTML = `<button class="btn btn-success" onclick="confirmImport()">Confirmar importacion</button> <button class="btn btn-outline" onclick="closeModal('upload-modal')">Cancelar</button>`;
+    } catch(err) { alert('Error al leer archivo: '+err.message); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function confirmImport() {
+  const norm = h => h.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
+  const fieldMap = { codigo: null, empleado: null, nombre: null, apellido: null, tienda: null, fecha: null, entrada: null, salida: null };
+  for (const h of uploadedHeaders) {
+    const n = norm(h);
+    if (!fieldMap.codigo && (n === 'codigo empleado' || n === 'codigo' || n === 'cod' || n === 'id' || n === 'matricula')) fieldMap.codigo = h;
+    if (!fieldMap.nombre && (n === 'nombre' || n === 'nombre empleado' || n.startsWith('nombr'))) fieldMap.nombre = h;
+    if (!fieldMap.apellido && (n === 'apellido' || n === 'apellidos')) fieldMap.apellido = h;
+    if (!fieldMap.empleado && (n === 'empleado' || n === 'nombre' || n === 'apellido' || n.startsWith('nombr'))) fieldMap.empleado = h;
+    if (!fieldMap.tienda && (n === 'tienda' || n === 'ubicacion' || n === 'sucursal' || n === 'lugar')) fieldMap.tienda = h;
+    if (!fieldMap.fecha && (n === 'fecha' || n === 'date' || n === 'dia' || n === 'fech')) fieldMap.fecha = h;
+    if (!fieldMap.entrada && (n.includes('entrada') || n.includes('llegada') || n.includes('inicio'))) fieldMap.entrada = h;
+    if (!fieldMap.salida && (n.includes('salida') || n.includes('ida') || n.includes('fin'))) fieldMap.salida = h;
+  }
+  const missing = Object.entries(fieldMap).filter(([k,v]) => !v && k !== 'nombre' && k !== 'apellido').map(([k]) => k);
+  if (missing.length > 0) return alert('No se detectaron columnas: '+missing.join(', '));
+
+  function parseDate(v) {
+    if (!v || v === true || v === false) return '';
+    if (v instanceof Date && !isNaN(v)) return `${String(v.getUTCDate()).padStart(2,'0')}/${String(v.getUTCMonth()+1).padStart(2,'0')}/${v.getUTCFullYear()}`;
+    if (typeof v === 'number') {
+      let days = Math.floor(v);
+      if (days >= 60) days--;
+      const d = new Date(Date.UTC(1900, 0, days));
+      if (!isNaN(d)) return `${String(d.getUTCDate()).padStart(2,'0')}/${String(d.getUTCMonth()+1).padStart(2,'0')}/${d.getUTCFullYear()}`;
+    }
+    if (typeof v === 'string') {
+      const p = v.split(/[\/\-]/);
+      if (p.length === 3) {
+        const ex = s => { const m = String(s).match(/\d+/); return m ? +m[0] : NaN; };
+        let d, m, y;
+        if (v.includes('/')) { d=ex(p[0]); m=ex(p[1]); y=ex(p[2]); } else { y=ex(p[0]); m=ex(p[1]); d=ex(p[2]); }
+        if (isNaN(y)) { d=ex(p[2]); y=ex(p[0]); }
+        if (isNaN(d)) d = 1;
+        if (isNaN(m)) m = 1;
+        if (isNaN(y)) y = new Date().getFullYear();
+        if (y < 100) y += 2000;
+        if (y >= 100 && y < 1000 && y === Math.floor(new Date().getFullYear() / 10)) y = new Date().getFullYear();
+        return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
+      }
+      if (p.length === 2) {
+        const ex = s => { const m = String(s).match(/\d+/); return m ? +m[0] : NaN; };
+        let m = ex(p[0]), y = ex(p[1]);
+        if (isNaN(m) || isNaN(y)) { m = ex(p[1]); y = ex(p[0]); }
+        if (y < 100) y += 2000;
+        if (y >= 100 && y < 1000 && y === Math.floor(new Date().getFullYear() / 10)) y = new Date().getFullYear();
+        if (!isNaN(m) && !isNaN(y)) return `01/${String(m).padStart(2,'0')}/${y}`;
+      }
+    }
+    return String(v).trim();
+  }
+
+  const count = uploadedRows.length;
+  for (const row of uploadedRows) {
+    const r = {
+      codigo: String(row[fieldMap.codigo]||'').trim(),
+      empleado: fieldMap.nombre || fieldMap.apellido
+        ? [fieldMap.nombre ? String(row[fieldMap.nombre]||'').trim() : '', fieldMap.apellido ? String(row[fieldMap.apellido]||'').trim() : ''].filter(Boolean).join(' ')
+        : String(row[fieldMap.empleado]||'').trim(),
+      tienda: String(row[fieldMap.tienda]||'').trim(),
+      fecha: parseDate(row[fieldMap.fecha]),
+      entrada: String(row[fieldMap.entrada]||'').trim(),
+      salida: fieldMap.salida ? String(row[fieldMap.salida]||'').trim() : '',
+    };
+    if (r.codigo && r.fecha) allData.push(r);
+  }
+
+  saveData();
+  closeModal('upload-modal');
+  init();
+}
+
+// ===================== ADD =====================
+function showAddModal() {
+  document.getElementById('add-codigo').value = '';
+  document.getElementById('add-empleado').value = '';
+  document.getElementById('add-tienda').value = '';
+  document.getElementById('add-fecha').value = new Date().toISOString().split('T')[0];
+  document.getElementById('add-entrada').value = '';
+  document.getElementById('add-salida').value = '';
+  document.getElementById('add-modal').classList.remove('hidden');
+}
+function saveAdd() {
+  const codigo = document.getElementById('add-codigo').value.trim();
+  const empleado = document.getElementById('add-empleado').value.trim();
+  const tienda = document.getElementById('add-tienda').value.trim();
+  const fechaRaw = document.getElementById('add-fecha').value;
+  if (!codigo || !fechaRaw) return alert('C├│digo y fecha requeridos');
+  const d = new Date(fechaRaw);
+  const fecha = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+  allData.push({
+    codigo, empleado, tienda, fecha,
+    entrada: document.getElementById('add-entrada').value,
+    salida: document.getElementById('add-salida').value,
+  });
+  saveData();
+  closeModal('add-modal');
+  init();
+}
+
+function editField(idx, field) {
+  let r = allData[idx];
+  if (!r) {
+    const codigo = prompt('C├│digo del empleado:');
+    const fecha = prompt('Fecha (dd/mm/aaaa):');
+    if (!codigo || !fecha) return;
+    r = allData.find(x => x.codigo === codigo && x.fecha === fecha);
+    if (!r) return alert('Registro no encontrado');
+  }
+  const label = field === 'entrada' ? 'Entrada' : 'Salida';
+  const val = prompt(`Nueva ${label} (HH:MM):`, r[field]||'');
+  if (val === null) return;
+  r[field] = val.trim();
+  saveData();
+  init();
+}
+function addMissing(codigo, empleado, tienda, fecha, field) {
+  let r = allData.find(x => x.codigo === codigo && x.fecha === fecha);
+  if (!r) {
+    r = { codigo, empleado, tienda, fecha, entrada: '', salida: '' };
+    allData.push(r);
+  }
+  const label = field === 'entrada' ? 'Entrada' : 'Salida';
+  const val = prompt(`Hora de ${label} (HH:MM):`);
+  if (!val) return;
+  r[field] = val.trim();
+  saveData();
+  init();
+}
+function reportarProblema(idx) {
+  const r = allData[idx];
+  if (!r) return;
+  const desc = prompt('Describe el problema para ' + extractDate(r.fecha) + ':');
+  if (!desc) return;
+  r.problema = desc.trim();
+  saveData();
+  init();
+}
+function exportEmp(codigo) {
+  const selMonth = document.getElementById('month-filter').value;
+  let data = allData.filter(r => r.codigo === codigo);
+  if (selMonth) data = data.filter(r => getMonthKey(r.fecha) === selMonth);
+  if (data.length === 0) return alert('Sin registros para exportar');
+  data = [...data].sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
+  const emp = `${data[0].codigo} - ${data[0].empleado||''}`;
+  const rows = [{ Codigo: emp, Empleado: '', Tienda: '', Fecha: '', Entrada: '', Salida: '', Estado: '' }];
+  rows.push({ Codigo: '', Empleado: '', Tienda: 'Tienda', Fecha: 'Fecha', Entrada: 'Entrada', Salida: 'Salida', Estado: 'Estado' });
+  for (const r of data) {
+    rows.push({ Codigo: '', Empleado: '', Tienda: r.tienda, Fecha: extractDate(r.fecha), Entrada: r.entrada||'', Salida: r.salida||'', Estado: getStatus(r) });
+  }
+  const ws = XLSX.utils.json_to_sheet(rows, { header: ['Codigo','Empleado','Tienda','Fecha','Entrada','Salida','Estado'] });
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Ponches');
+  XLSX.writeFile(wb, `empleado_${codigo}.xlsx`);
+}
+
+// ===================== MERGE =====================
 function mergeDuplicados() {
   const antes = allData.length;
   const grupos = {};
