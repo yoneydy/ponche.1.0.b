@@ -452,7 +452,7 @@ function renderStoreView() {
           html += `<tr class="row-missing">
             <td>${storeFirst ? store : ''}</td>
             <td class="cell-missing">${row.fecha}</td>
-            <td class="cell-missing">${diaSemana(row.fecha)}<span class="cell-edit" onclick="reportarFalta('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">🚩</span></td>
+            <td class="cell-missing">${diaSemana(row.fecha)}<span class="cell-edit" onclick="reportarFalta('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">💬</span></td>
             <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','entrada')">+</span></td>
             <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','salida')">+</span></td>
             <td style="color:#dc2626">---</td>
@@ -466,12 +466,13 @@ function renderStoreView() {
         const e = r.entrada||'', s = r.salida||'';
         const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:#fee2e2"' : '';
         const reportado = r.problema ? '⚠️' : '';
+        const reportText = r.problema ? '<span style="font-size:.65rem;color:#64748b;margin-left:.2rem">'+r.problema.substring(0,25)+(r.problema.length>25?'…':'')+'</span>' : '';
         const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
-        const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">🚩</span>';
+        const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">💬</span>';
         html += `<tr${rowClass}>
           <td>${storeFirst ? store : ''}</td>
           <td>${extractDate(r.fecha)||''}</td>
-          <td>${diaSemana(r.fecha)}${reportado ? '<span'+reportTitle+'>'+reportado+'</span>' : reportBtn}</td>
+          <td>${diaSemana(r.fecha)}${reportado ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : reportBtn}</td>
           <td><span class="cell-edit${!e?' cell-missing':''}" onclick="editField(${idx},'entrada')">${e||'--'}</span></td>
           <td><span class="cell-edit${!s?' cell-missing':''}" onclick="editField(${idx},'salida')">${s||'--'}</span></td>
           <td>${calcHoras(e,s)}</td>
@@ -516,12 +517,13 @@ function renderEmployeeView() {
       const e = r.entrada||'', s = r.salida||'';
       const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:#fee2e2"' : '';
       const reportado = r.problema ? '⚠️' : '';
+      const reportText = r.problema ? '<span style="font-size:.65rem;color:#64748b;margin-left:.2rem">'+r.problema.substring(0,25)+(r.problema.length>25?'…':'')+'</span>' : '';
       const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
-      const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">🚩</span>';
+      const reportBtn = r.problema ? '' : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#94a3b8;font-size:.65rem;margin-left:.25rem">💬</span>';
       html += `<tr${rowClass}>
         <td>${r.tienda||''}</td>
         <td>${extractDate(r.fecha)||''}</td>
-        <td>${diaSemana(r.fecha)}${reportado ? '<span'+reportTitle+'>'+reportado+'</span>' : reportBtn}</td>
+        <td>${diaSemana(r.fecha)}${reportado ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : reportBtn}</td>
         <td><span class="cell-edit${!e?' cell-missing':''}" onclick="editField(${idx},'entrada')">${e||'--'}</span></td>
         <td><span class="cell-edit${!s?' cell-missing':''}" onclick="editField(${idx},'salida')">${s||'--'}</span></td>
         <td>${calcHoras(e,s)}</td>
@@ -751,7 +753,7 @@ function addMissing(codigo, empleado, tienda, fecha, field) {
 function reportarProblema(idx) {
   const r = allData[idx];
   if (!r) return;
-  const desc = prompt('Describe el problema para ' + extractDate(r.fecha) + ':');
+  const desc = prompt('Comentario para ' + extractDate(r.fecha) + ':');
   if (!desc) return;
   r.problema = desc.trim();
   saveData();
@@ -763,7 +765,7 @@ function reportarFalta(codigo, empleado, tienda, fecha) {
     r = { codigo, empleado, tienda, fecha, entrada: '', salida: '' };
     allData.push(r);
   }
-  const desc = prompt('Motivo de la falta para ' + fecha + ':');
+  const desc = prompt('Comentario para la falta del ' + fecha + ':');
   if (!desc) { if (!r.entrada && !r.salida && !r.problema) allData.pop(); return; }
   r.problema = desc.trim();
   saveData();
