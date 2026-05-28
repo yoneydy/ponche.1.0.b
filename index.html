@@ -112,10 +112,6 @@ tr:hover td{background:#f8fafc}
       <button class="btn btn-outline btn-sm" onclick="exportExcel()">­ƒôñ Exportar</button>
       <button class="btn btn-outline btn-sm admin-only" onclick="showAddModal()">Ô×ò Agregar</button>
       <button class="btn btn-outline btn-sm admin-only" onclick="mergeDuplicados()" style="color:#dc2626">🔀 Unificar días</button>
-      <button class="btn btn-outline btn-sm admin-only" onclick="backupData()">💾 Backup</button>
-      <button class="btn btn-outline btn-sm admin-only" onclick="document.getElementById('restore-input').click()">📂 Restore</button>
-      <input id="restore-input" type="file" accept=".json" onchange="restoreData(this.files[0])" style="display:none">
-      <button class="btn btn-outline btn-sm admin-only" onclick="syncToGitHub()">☁️ Subir datos</button>
       <button class="btn btn-outline btn-sm" onclick="logout()" style="color:#dc2626">🚪 Salir</button>
     </div>
   </div>
@@ -233,58 +229,6 @@ function logout() {
   document.getElementById('login-employee-select').classList.add('hidden');
 }
 
-// ===================== BACKUP / RESTORE / SYNC =====================
-function backupData() {
-  const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'ponches_backup_' + new Date().toISOString().slice(0,10) + '.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-function restoreData(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (!Array.isArray(data)) throw new Error('Formato inválido');
-      allData = data;
-      saveData();
-      init();
-      alert('Datos restaurados correctamente: ' + allData.length + ' registros.');
-    } catch(err) { alert('Error al restaurar: ' + err.message); }
-  };
-  reader.readAsText(file);
-}
-function getGitHubToken() {
-  let token = localStorage.getItem('gh_token');
-  if (!token) { token = prompt('Ingresa tu token de GitHub (solo una vez, se guarda localmente):'); if (token) localStorage.setItem('gh_token', token); }
-  return token;
-}
-function syncToGitHub() {
-  if (location.protocol === 'file:') {
-    alert('Esta función solo funciona desde la página publicada.\n\nAbre este enlace en Edge:\nhttps://yoneydy.github.io/ponche.1.0.b/\n\nAhí podrás subir los datos a la nube.');
-    return;
-  }
-  const token = getGitHubToken();
-  if (!token) return alert('Token requerido para sincronizar');
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(allData, null, 2))));
-  const url = 'https://api.github.com/repos/yoneydy/ponche.1.0.b/contents/data/ponches.json';
-  fetch(url, { headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' } })
-    .then(r => r.json())
-    .then(existing => {
-      const body = { message: 'sync data ' + new Date().toISOString(), content: content };
-      if (existing.sha) body.sha = existing.sha;
-      return fetch(url, { method: 'PUT', headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' }, body: JSON.stringify(body) });
-    })
-    .then(r => r.json())
-    .then(res => {
-      if (res.content) alert('✅ Datos subidos a GitHub exitosamente');
-      else alert('❌ Error: ' + (res.message || 'desconocido'));
-    })
-    .catch(e => alert('❌ Error de conexión: ' + e.message + '\n\nAsegúrate de abrir la página desde:\nhttps://yoneydy.github.io/ponche.1.0.b/'));
-}
 function loadFromGitHub() {
   if (location.protocol === 'file:') return;
   fetch('https://api.github.com/repos/yoneydy/ponche.1.0.b/contents/data/ponches.json', { headers: { Accept: 'application/vnd.github+json' } })
