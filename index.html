@@ -129,6 +129,7 @@ tr:hover td{background:#f8fafc}
       <input id="search-input" placeholder="Buscar por tienda, nombre, código..." oninput="debouncedSearch()">
     </div>
     <button class="btn btn-outline btn-sm admin-only" onclick="exportExcel()">📤 Exportar Todo</button>
+    <button class="btn btn-outline btn-sm admin-only" onclick="deleteMonth()" style="color:#dc2626">🗑️ Eliminar mes</button>
   </div>
 
   <div class="stats-grid" id="stats-grid"></div>
@@ -534,6 +535,21 @@ function deleteEmployee(codigo, empleado) {
   const eliminados = antes - allData.length;
   alert(`Empleado eliminado. ${eliminados} registros borrados.`);
   if (window._selectedEmp === codigo) window._selectedEmp = null;
+  init();
+}
+
+function deleteMonth() {
+  const selMonth = document.getElementById('month-filter').value;
+  if (!selMonth) return alert('Selecciona un mes específico primero.');
+  const [y, m] = selMonth.split('-');
+  const mesNombre = new Date(+y, +m-1).toLocaleString('es', { month: 'long', year: 'numeric' });
+  const aEliminar = allData.filter(r => getMonthKey(r.fecha) === selMonth);
+  if (aEliminar.length === 0) return alert('No hay registros en ' + mesNombre);
+  if (!confirm(`Eliminar ${aEliminar.length} registros de ${mesNombre}?`)) return;
+  if (!confirm('Esta acción no se puede deshacer. Continuar?')) return;
+  allData = allData.filter(r => getMonthKey(r.fecha) !== selMonth);
+  saveData();
+  alert(`Eliminados ${aEliminar.length} registros de ${mesNombre}.`);
   init();
 }
 
