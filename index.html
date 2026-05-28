@@ -112,6 +112,7 @@ tr:hover td{background:#f8fafc}
       <button class="btn btn-outline btn-sm" onclick="exportExcel()">📤 Exportar</button>
       <button class="btn btn-outline btn-sm admin-only" onclick="showAddModal()">➕ Agregar</button>
       <button class="btn btn-outline btn-sm admin-only" onclick="mergeDuplicados()" style="color:#dc2626">🔀 Unificar días</button>
+      <button class="btn btn-outline btn-sm admin-only" onclick="syncToGitHub()">☁️ Subir datos</button>
       <button class="btn btn-outline btn-sm" onclick="logout()" style="color:#dc2626">🚪 Salir</button>
     </div>
   </div>
@@ -238,6 +239,35 @@ function loadFromGitHub() {
       const json = JSON.parse(decodeURIComponent(escape(atob(resp.content))));
       if (Array.isArray(json) && json.length > 0) { allData = json; saveData(); }
     }).catch(e => {});
+}
+
+function getGitHubToken() {
+  let token = localStorage.getItem('gh_token');
+  if (!token) { token = prompt('Ingresa el token de GitHub (solo una vez, se guarda automáticamente):'); if (token) localStorage.setItem('gh_token', token); }
+  return token;
+}
+function syncToGitHub() {
+  if (location.protocol === 'file:') {
+    alert('Abre la página desde:\nhttps://yoneydy.github.io/ponche.1.0.b/\npara poder subir los datos.');
+    return;
+  }
+  const token = getGitHubToken();
+  if (!token) return;
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(allData, null, 2))));
+  const url = 'https://api.github.com/repos/yoneydy/ponche.1.0.b/contents/data/ponches.json';
+  fetch(url, { headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' } })
+    .then(r => r.json())
+    .then(existing => {
+      const body = { message: 'sync ' + new Date().toISOString(), content: content };
+      if (existing.sha) body.sha = existing.sha;
+      return fetch(url, { method: 'PUT', headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' }, body: JSON.stringify(body) });
+    })
+    .then(r => r.json())
+    .then(res => {
+      if (res.content) alert('✅ Datos subidos. Todos los dispositivos verán los cambios al recargar.');
+      else alert('Error: ' + (res.message || ''));
+    })
+    .catch(e => alert('Error de conexión: ' + e.message));
 }
 
 // ===================== INIT =====================
