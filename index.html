@@ -718,6 +718,7 @@ function saveAdd() {
 }
 
 function editField(idx, field) {
+  if (userRole !== 'admin') return alert('Solo el administrador puede editar registros.');
   let r = allData[idx];
   if (!r) {
     const codigo = prompt('Código del empleado:');
@@ -734,6 +735,7 @@ function editField(idx, field) {
   init();
 }
 function addMissing(codigo, empleado, tienda, fecha, field) {
+  if (userRole !== 'admin') return alert('Solo el administrador puede agregar registros.');
   let r = allData.find(x => x.codigo === codigo && x.fecha === fecha);
   if (!r) {
     r = { codigo, empleado, tienda, fecha, entrada: '', salida: '' };
