@@ -7,60 +7,72 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f1f5f9;color:#1e293b;font-size:14px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0B0B0D;color:#F5F5F5;font-size:14px;line-height:1.5}
 .hidden{display:none!important}
-.login-container{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1e3a5f,#3b82f6);padding:1rem}
-.login-card{background:#fff;border-radius:1rem;padding:2.5rem 2rem;width:100%;max-width:380px;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);text-align:center}
-.login-card h1{font-size:1.5rem;font-weight:700;margin-bottom:.25rem}
-.login-card .subtitle{color:#94a3b8;font-size:.85rem;margin-bottom:1.75rem}
-.login-card input{width:100%;padding:.75rem 1rem;border:1.5px solid #e2e8f0;border-radius:.65rem;font-size:.95rem;margin-bottom:.75rem;outline:none}
-.login-card input:focus{border-color:#2563eb;box-shadow:0 0 0 3px #dbeafe}
-.login-card button{width:100%;padding:.75rem;background:#2563eb;color:#fff;border:none;border-radius:.65rem;font-size:1rem;font-weight:600;cursor:pointer}
-.login-card button:hover{background:#1d4ed8}
-.login-card .error{color:#dc2626;font-size:.8rem;margin-top:.5rem;min-height:1.2rem}
+.login-container{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0B0B0D;padding:1rem;position:relative;overflow:hidden}
+.login-container::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 50%,rgba(212,17,58,0.08) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(212,17,58,0.05) 0%,transparent 60%);pointer-events:none}
+.login-card{background:#1D1D22;border-radius:1rem;padding:2.5rem 2rem;width:100%;max-width:380px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.7),0 0 40px rgba(212,17,58,0.08);text-align:center;border:1px solid #2A2A30;position:relative}
+.login-card h1{font-size:1.5rem;font-weight:700;margin-bottom:.25rem;color:#F5F5F5}
+.login-card .subtitle{color:#757575;font-size:.85rem;margin-bottom:1.75rem}
+.login-card input{width:100%;padding:.75rem 1rem;border:1.5px solid #2A2A30;border-radius:.65rem;font-size:.95rem;margin-bottom:.75rem;outline:none;background:#151518;color:#F5F5F5;transition:border-color 0.2s,box-shadow 0.2s}
+.login-card input:focus{border-color:#D4113A;box-shadow:0 0 0 3px rgba(212,17,58,0.15)}
+.login-card input::placeholder{color:#757575}
+.login-card button{width:100%;padding:.75rem;background:#D4113A;color:#fff;border:none;border-radius:.65rem;font-size:1rem;font-weight:600;cursor:pointer;transition:background 0.2s,box-shadow 0.2s}
+.login-card button:hover{background:#9E0B28;box-shadow:0 0 20px rgba(212,17,58,0.3)}
+.login-card .error{color:#FF2D55;font-size:.8rem;margin-top:.5rem;min-height:1.2rem}
+.login-card select{width:100%;padding:.75rem 1rem;border:1.5px solid #2A2A30;border-radius:.65rem;font-size:.95rem;margin-bottom:.75rem;outline:none;background:#151518;color:#F5F5F5;transition:border-color 0.2s}
+.login-card select:focus{border-color:#D4113A;box-shadow:0 0 0 3px rgba(212,17,58,0.15)}
 .app-container{max-width:1200px;margin:0 auto;padding:1rem}
-.topbar{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:.6rem 1rem;border-radius:.75rem;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
-.topbar h2{font-size:1.1rem;font-weight:700;color:#2563eb}
-.topbar .badge{font-size:.75rem;background:#dbeafe;color:#2563eb;padding:.2rem .55rem;border-radius:999px;font-weight:600}
+.topbar{display:flex;align-items:center;justify-content:space-between;background:#151518;padding:.6rem 1rem;border-radius:.75rem;box-shadow:0 1px 3px rgba(0,0,0,0.7);margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;border:1px solid #2A2A30}
+.topbar h2{font-size:1.1rem;font-weight:700;color:#D4113A}
+.topbar .badge{font-size:.75rem;background:rgba(212,17,58,0.15);color:#FF2D55;padding:.2rem .55rem;border-radius:999px;font-weight:600}
 .topbar-actions{display:flex;gap:.4rem;flex-wrap:wrap}
-.btn{padding:.45rem .85rem;border-radius:.5rem;font-size:.75rem;font-weight:600;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
-.btn-primary{background:#2563eb;color:#fff}
-.btn-outline{background:transparent;border:1.5px solid #e2e8f0;color:#1e293b}
-.btn-outline:hover{background:#f1f5f9}
-.btn-danger{background:#dc2626;color:#fff}
-.btn-success{background:#16a34a;color:#fff}
+.btn{padding:.45rem .85rem;border-radius:.5rem;font-size:.75rem;font-weight:600;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap;transition:all 0.2s}
+.btn-primary{background:#D4113A;color:#fff;border-color:#D4113A}
+.btn-primary:hover{background:#9E0B28;box-shadow:0 0 15px rgba(212,17,58,0.25)}
+.btn-outline{background:transparent;border:1.5px solid #2A2A30;color:#B5B5B5}
+.btn-outline:hover{background:#1D1D22;border-color:#D4113A;color:#F5F5F5}
+.btn-danger{background:#9E0B28;color:#fff;border-color:#9E0B28}
+.btn-danger:hover{background:#D4113A;box-shadow:0 0 15px rgba(212,17,58,0.25)}
+.btn-success{background:#D4113A;color:#fff;border-color:#D4113A}
+.btn-success:hover{background:#9E0B28}
 .btn-sm{padding:.35rem .6rem;font-size:.7rem}
 .filters{display:flex;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap;align-items:center}
-.filters select,.filters input{padding:.45rem .65rem;border:1.5px solid #e2e8f0;border-radius:.5rem;font-size:.8rem;outline:none;background:#fff}
-.filters select:focus,.filters input:focus{border-color:#2563eb}
-.filters .search-wrap{display:flex;align-items:center;gap:.35rem;background:#fff;border:1.5px solid #e2e8f0;border-radius:.5rem;padding:0 .55rem}
-.filters .search-wrap input{border:none;padding:.4rem 0;font-size:.8rem;min-width:160px}
+.filters select,.filters input{padding:.45rem .65rem;border:1.5px solid #2A2A30;border-radius:.5rem;font-size:.8rem;outline:none;background:#151518;color:#F5F5F5;transition:border-color 0.2s,box-shadow 0.2s}
+.filters select:focus,.filters input:focus{border-color:#D4113A;box-shadow:0 0 0 2px rgba(212,17,58,0.15)}
+.filters select option{background:#151518;color:#F5F5F5}
+.filters .search-wrap{display:flex;align-items:center;gap:.35rem;background:#151518;border:1.5px solid #2A2A30;border-radius:.5rem;padding:0 .55rem;transition:border-color 0.2s,box-shadow 0.2s}
+.filters .search-wrap:focus-within{border-color:#D4113A;box-shadow:0 0 0 2px rgba(212,17,58,0.12)}
+.filters .search-wrap input{border:none;background:transparent;padding:.4rem 0;font-size:.8rem;min-width:160px;color:#F5F5F5}
+.filters .search-wrap input::placeholder{color:#757575}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:.5rem;margin-bottom:.75rem}
-.stat-card{background:#fff;border-radius:.5rem;padding:.6rem .75rem;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-.stat-card .label{font-size:.65rem;color:#94a3b8;text-transform:uppercase;font-weight:600}
-.stat-card .value{font-size:1.3rem;font-weight:700;margin-top:.15rem}
-.table-wrap{background:#fff;border-radius:.75rem;overflow-x:auto;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1rem}
+.stat-card{background:#1D1D22;border-radius:.5rem;padding:.6rem .75rem;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,0.4);border:1px solid #2A2A30;transition:border-color 0.2s,box-shadow 0.2s}
+.stat-card:hover{border-color:#D4113A;box-shadow:0 0 12px rgba(212,17,58,0.12)}
+.stat-card .label{font-size:.65rem;color:#757575;text-transform:uppercase;font-weight:600;letter-spacing:.03em}
+.stat-card .value{font-size:1.3rem;font-weight:700;margin-top:.15rem;color:#F5F5F5}
+.table-wrap{background:#151518;border-radius:.75rem;overflow-x:auto;box-shadow:0 1px 3px rgba(0,0,0,0.7);margin-bottom:1rem;border:1px solid #2A2A30}
 table{width:100%;border-collapse:collapse;font-size:.8rem}
-th{background:#f8fafc;text-align:left;padding:.6rem .65rem;font-weight:600;color:#64748b;font-size:.7rem;text-transform:uppercase;position:sticky;top:0;z-index:1;white-space:nowrap}
-td{padding:.55rem .65rem;border-top:1px solid #f1f5f9;white-space:nowrap}
-tr:hover td{background:#f8fafc}
-.store-header td{background:#eef2ff;font-weight:700;color:#4f46e5;font-size:.85rem;padding:.5rem .65rem}
-.row-sinponche td{color:#94a3b8;font-style:italic}
+th{background:#1D1D22;text-align:left;padding:.6rem .65rem;font-weight:600;color:#B5B5B5;font-size:.7rem;text-transform:uppercase;position:sticky;top:0;z-index:1;white-space:nowrap;border-bottom:1px solid #2A2A30;letter-spacing:.03em}
+td{padding:.55rem .65rem;border-top:1px solid #2A2A30;white-space:nowrap;color:#B5B5B5}
+tr:hover td{background:rgba(212,17,58,0.04)}
+.store-header td{background:#1D1D22;font-weight:700;color:#D4113A;font-size:.85rem;padding:.5rem .65rem;border-bottom:1px solid #D4113A}
+.row-sinponche td{color:#757575;font-style:italic}
 .badge{display:inline-block;padding:.15rem .45rem;border-radius:999px;font-size:.7rem;font-weight:600}
-.badge-success{background:#dcfce7;color:#16a34a}
-.badge-warning{background:#fef3c7;color:#d97706}
-.badge-danger{background:#fee2e2;color:#dc2626}
-.cell-missing{color:#dc2626;font-weight:600}
-.cell-missing:hover{background:#fef2f2}
-.row-missing{background:#fef2f2}
-.row-missing td{color:#dc2626!important}
-.cell-edit{cursor:pointer;border-bottom:1px dashed #cbd5e1;padding:1px 2px}
-.cell-edit:hover{background:#eff6ff;border-color:#2563eb}
-.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:100;padding:1rem}
-.modal-content{background:#fff;border-radius:.75rem;padding:1.5rem;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
-.modal-content h3{font-size:1rem;margin-bottom:.75rem}
-.modal-content input,.modal-content select,.modal-content textarea{width:100%;padding:.6rem .75rem;border:1.5px solid #e2e8f0;border-radius:.5rem;font-size:.85rem;outline:none;margin-bottom:.5rem}
-.modal-content input:focus,.modal-content select:focus,.modal-content textarea:focus{border-color:#2563eb}
+.badge-success{background:rgba(212,17,58,0.15);color:#FF2D55}
+.badge-warning{background:rgba(212,17,58,0.1);color:#FF2D55}
+.badge-danger{background:rgba(212,17,58,0.08);color:#757575}
+.cell-missing{color:#FF2D55;font-weight:600}
+.cell-missing:hover{background:rgba(212,17,58,0.08)}
+.row-missing{background:rgba(212,17,58,0.06)}
+.row-missing td{color:#FF2D55!important}
+.cell-edit{cursor:pointer;border-bottom:1px dashed #2A2A30;padding:1px 2px;transition:border-color 0.2s,color 0.2s}
+.cell-edit:hover{background:rgba(212,17,58,0.08);border-color:#D4113A;color:#F5F5F5}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:100;padding:1rem;backdrop-filter:blur(4px)}
+.modal-content{background:#1D1D22;border-radius:.75rem;padding:1.5rem;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;border:1px solid #2A2A30;box-shadow:0 25px 50px -12px rgba(0,0,0,0.7),0 0 30px rgba(212,17,58,0.06)}
+.modal-content h3{font-size:1rem;margin-bottom:.75rem;color:#F5F5F5}
+.modal-content input,.modal-content select,.modal-content textarea{width:100%;padding:.6rem .75rem;border:1.5px solid #2A2A30;border-radius:.5rem;font-size:.85rem;outline:none;margin-bottom:.5rem;background:#151518;color:#F5F5F5;transition:border-color 0.2s}
+.modal-content input:focus,.modal-content select:focus,.modal-content textarea:focus{border-color:#D4113A;box-shadow:0 0 0 2px rgba(212,17,58,0.15)}
+.modal-content input::placeholder{color:#757575}
 .modal-actions{display:flex;gap:.5rem;margin-top:.75rem}
 @media(max-width:640px){
   .topbar{flex-direction:column;align-items:stretch}
@@ -89,8 +101,8 @@ tr:hover td{background:#f8fafc}
     <div id="login-form">
       <input id="login-password" type="password" placeholder="Contraseña de administrador" onkeydown="if(event.key==='Enter')doLogin()">
       <div id="login-employee-select" class="hidden">
-        <input id="login-employee-search" type="text" placeholder="Buscar nombre..." oninput="filterEmployeeNames()" style="width:100%;padding:.75rem 1rem;border:1.5px solid #e2e8f0;border-radius:.65rem;font-size:.95rem;margin-bottom:.5rem;outline:none">
-        <select id="login-employee-name" style="width:100%;padding:.75rem 1rem;border:1.5px solid #e2e8f0;border-radius:.65rem;font-size:.95rem;margin-bottom:.75rem;outline:none;background:#fff">
+        <input id="login-employee-search" type="text" placeholder="Buscar nombre..." oninput="filterEmployeeNames()" style="width:100%;padding:.75rem 1rem;border:1.5px solid #2A2A30;border-radius:.65rem;font-size:.95rem;margin-bottom:.5rem;outline:none">
+        <select id="login-employee-name" style="width:100%;padding:.75rem 1rem;border:1.5px solid #2A2A30;border-radius:.65rem;font-size:.95rem;margin-bottom:.75rem;outline:none;background:#fff">
           <option value="">Selecciona tu nombre</option>
         </select>
         <input id="login-employee-code" type="password" placeholder="Número de tarjeta" onkeydown="if(event.key==='Enter')doLogin()">
@@ -111,9 +123,9 @@ tr:hover td{background:#f8fafc}
       <button class="btn btn-outline btn-sm admin-only" onclick="showUploadModal()">📤 Importar</button>
       <button class="btn btn-outline btn-sm" onclick="exportExcel()">📤 Exportar</button>
       <button class="btn btn-outline btn-sm admin-only" onclick="showAddModal()">➕ Agregar</button>
-      <button class="btn btn-outline btn-sm admin-only" onclick="mergeDuplicados()" style="color:#dc2626">🔀 Unificar días</button>
+      <button class="btn btn-outline btn-sm admin-only" onclick="mergeDuplicados()" style="color:#FF2D55">🔀 Unificar días</button>
       <button class="btn btn-outline btn-sm admin-only" onclick="syncToGitHub()">☁️ Subir datos</button>
-      <button class="btn btn-outline btn-sm" onclick="logout()" style="color:#dc2626">🚪 Salir</button>
+      <button class="btn btn-outline btn-sm" onclick="logout()" style="color:#FF2D55">🚪 Salir</button>
     </div>
   </div>
 
@@ -130,7 +142,7 @@ tr:hover td{background:#f8fafc}
       <input id="search-input" placeholder="Buscar por tienda, nombre, código..." oninput="debouncedSearch()">
     </div>
     <button class="btn btn-outline btn-sm admin-only" onclick="exportExcel()">📤 Exportar Todo</button>
-    <button class="btn btn-outline btn-sm admin-only" onclick="deleteMonth()" style="color:#dc2626">🗑️ Eliminar mes</button>
+    <button class="btn btn-outline btn-sm admin-only" onclick="deleteMonth()" style="color:#FF2D55">🗑️ Eliminar mes</button>
   </div>
 
   <div class="stats-grid" id="stats-grid"></div>
@@ -389,9 +401,9 @@ function renderDashboard() {
   const empleados = new Set(filtered.map(r=>r.codigo)).size;
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card"><div class="label">Registros</div><div class="value">${total}</div></div>
-    <div class="stat-card"><div class="label">✅ Completos</div><div class="value" style="color:#16a34a">${completos}</div></div>
-    <div class="stat-card"><div class="label">⚠️ Incompletos</div><div class="value" style="color:#d97706">${incompletos}</div></div>
-    <div class="stat-card"><div class="label">🔴 Sin ponche</div><div class="value" style="color:#dc2626">${sinponche}</div></div>
+    <div class="stat-card"><div class="label">✅ Completos</div><div class="value" style="color:#FF2D55">${completos}</div></div>
+    <div class="stat-card"><div class="label">⚠️ Incompletos</div><div class="value" style="color:#FF2D55">${incompletos}</div></div>
+    <div class="stat-card"><div class="label">🔴 Sin ponche</div><div class="value" style="color:#FF2D55">${sinponche}</div></div>
     <div class="stat-card"><div class="label">Tiendas</div><div class="value">${tiendas}</div></div>
     <div class="stat-card"><div class="label">Empleados</div><div class="value">${empleados}</div></div>`;
 }
@@ -423,10 +435,10 @@ function renderStoreView() {
       const sortedRecs = [...empInfo.records].sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
 
       // Employee header in blue
-      html += `<tr style="background:#eef2ff"><td colspan="6" style="padding:.4rem .65rem;font-weight:600;color:#4f46e5;font-size:.85rem">${emp} - ${empInfo.empleado||''}${store ? ' | ' + store : ''}</td>
+      html += `<tr style="background:#1D1D22"><td colspan="6" style="padding:.4rem .65rem;font-weight:600;color:#D4113A;font-size:.85rem">${emp} - ${empInfo.empleado||''}${store ? ' | ' + store : ''}</td>
         <td style="text-align:right;padding:.4rem .65rem"><button class="btn btn-outline btn-sm" onclick="exportEmp('${emp}')" title="Exportar empleado">📤</button></td></tr>`;
       // Column sub-header per employee
-      html += `<tr style="background:#f8fafc"><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Tienda</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Fecha</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Día</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Entrada</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Salida</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Total</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Estado</td><td style="font-size:.65rem;color:#94a3b8;font-weight:600">Reporte</td></tr>`;
+      html += `<tr style="background:#1D1D22"><td style="font-size:.65rem;color:#757575;font-weight:600">Tienda</td><td style="font-size:.65rem;color:#757575;font-weight:600">Fecha</td><td style="font-size:.65rem;color:#757575;font-weight:600">Día</td><td style="font-size:.65rem;color:#757575;font-weight:600">Entrada</td><td style="font-size:.65rem;color:#757575;font-weight:600">Salida</td><td style="font-size:.65rem;color:#757575;font-weight:600">Total</td><td style="font-size:.65rem;color:#757575;font-weight:600">Estado</td><td style="font-size:.65rem;color:#757575;font-weight:600">Reporte</td></tr>`;
 
       let rows = [];
       if (selMonth) {
@@ -455,9 +467,9 @@ function renderStoreView() {
             <td class="cell-missing">${diaSemana(row.fecha)}</td>
             <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','entrada')">+</span></td>
             <td><span class="cell-edit cell-missing" onclick="addMissing('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}','salida')">+</span></td>
-            <td style="color:#dc2626">---</td>
+            <td style="color:#FF2D55">---</td>
             <td><span class="badge badge-danger">Sin ponche</span></td>
-            <td><span class="cell-edit" onclick="reportarFalta('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}')" style="color:#2563eb;font-size:.7rem">Reporte</span></td>
+            <td><span class="cell-edit" onclick="reportarFalta('${emp}','${(empInfo.empleado||'').replace(/'/g,"\\'")}','${store.replace(/'/g,"\\'")}','${row.fecha}')" style="color:#D4113A;font-size:.7rem">Reporte</span></td>
           </tr>`;
           storeFirst = false; continue;
         }
@@ -465,11 +477,11 @@ function renderStoreView() {
         const idx = allData.indexOf(r);
         const st = getStatus(r);
         const e = r.entrada||'', s = r.salida||'';
-        const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:#fee2e2"' : '';
+        const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:rgba(212,17,58,0.08)"' : '';
         const reportado = r.problema ? '⚠️' : '';
-        const reportText = r.problema ? '<span style="font-size:.65rem;color:#64748b;margin-left:.2rem">'+r.problema.substring(0,25)+(r.problema.length>25?'…':'')+'</span>' : '';
+        const reportText = r.problema ? '<span style="font-size:.65rem;color:#B5B5B5;margin-left:.2rem">'+r.problema.substring(0,25)+(r.problema.length>25?'…':'')+'</span>' : '';
         const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
-        const reportCell = r.problema ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#2563eb;font-size:.7rem">Reporte</span>';
+        const reportCell = r.problema ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#D4113A;font-size:.7rem">Reporte</span>';
         html += `<tr${rowClass}>
           <td>${storeFirst ? store : ''}</td>
           <td>${extractDate(r.fecha)||''}</td>
@@ -486,7 +498,7 @@ function renderStoreView() {
   }
 
   html += '</tbody></table>';
-  if (Object.keys(groups).length === 0) html = '<div style="padding:2rem;text-align:center;color:#94a3b8">Sin registros para esta vista.</div>';
+  if (Object.keys(groups).length === 0) html = '<div style="padding:2rem;text-align:center;color:#757575">Sin registros para esta vista.</div>';
   document.getElementById('table-wrap').innerHTML = html;
 }
 
@@ -510,18 +522,18 @@ function renderEmployeeView() {
     // Show detailed view for selected employee
     const emp = empMap[window._selectedEmp];
     if (!emp) { window._selectedEmp = null; return renderEmployeeView(); }
-    html += `<div style="margin-bottom:.5rem"><button class="btn btn-outline btn-sm" onclick="window._selectedEmp=null;init()">← Volver</button> <strong style="font-size:1rem">${emp.codigo} - ${emp.empleado}</strong>${userRole==='admin' ? `<button class="btn btn-outline btn-sm" onclick="deleteEmployee('${emp.codigo}','${emp.empleado.replace(/'/g,"\\'")}')" style="color:#dc2626;margin-left:.5rem">🗑️ Eliminar empleado</button>` : ''}</div>`;
+    html += `<div style="margin-bottom:.5rem"><button class="btn btn-outline btn-sm" onclick="window._selectedEmp=null;init()">← Volver</button> <strong style="font-size:1rem">${emp.codigo} - ${emp.empleado}</strong>${userRole==='admin' ? `<button class="btn btn-outline btn-sm" onclick="deleteEmployee('${emp.codigo}','${emp.empleado.replace(/'/g,"\\'")}')" style="color:#FF2D55;margin-left:.5rem">🗑️ Eliminar empleado</button>` : ''}</div>`;
     html += '<table><thead><tr><th>Tienda</th><th>Fecha</th><th>Día</th><th>Entrada</th><th>Salida</th><th>Total</th><th>Estado</th><th>Reporte</th></tr></thead><tbody>';
     const sorted = [...emp.records].sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
     for (const r of sorted) {
       const idx = allData.indexOf(r);
       const st = getStatus(r);
       const e = r.entrada||'', s = r.salida||'';
-      const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:#fee2e2"' : '';
+      const rowClass = (!e || !s || (e && s && e === s)) ? ' style="background:rgba(212,17,58,0.08)"' : '';
       const reportado = r.problema ? '⚠️' : '';
-      const reportText = r.problema ? '<span style="font-size:.65rem;color:#64748b;margin-left:.2rem">'+r.problema.substring(0,25)+(r.problema.length>25?'…':'')+'</span>' : '';
+      const reportText = r.problema ? '<span style="font-size:.65rem;color:#B5B5B5;margin-left:.2rem">'+r.problema.substring(0,25)+(r.problema.length>25?'…':'')+'</span>' : '';
       const reportTitle = r.problema ? ' title="'+r.problema.replace(/"/g,'&quot;')+'"' : '';
-      const reportCell = r.problema ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#2563eb;font-size:.7rem">Reporte</span>';
+      const reportCell = r.problema ? '<span'+reportTitle+'>'+reportado+'</span>'+reportText : '<span class="cell-edit" onclick="reportarProblema('+idx+')" style="color:#D4113A;font-size:.7rem">Reporte</span>';
       html += `<tr${rowClass}>
         <td>${r.tienda||''}</td>
         <td>${extractDate(r.fecha)||''}</td>
@@ -548,12 +560,12 @@ function renderEmployeeView() {
         else sinponche++;
       }
       html += `<tr>
-        <td><a href="#" onclick="window._selectedEmp='${emp.codigo}';init();return false" style="color:#2563eb;text-decoration:none;font-weight:600">${emp.empleado}</a></td>
+        <td><a href="#" onclick="window._selectedEmp='${emp.codigo}';init();return false" style="color:#D4113A;text-decoration:none;font-weight:600">${emp.empleado}</a></td>
         <td>${emp.codigo}</td>
         <td>${emp.records.length}</td>
         <td><span class="badge badge-success">${completos}</span></td>
         <td>${incompletos > 0 ? `<span class="badge badge-warning">${incompletos}</span>` : '-'}</td>
-        <td>${userRole==='admin' ? `<button class="btn btn-outline btn-sm" onclick="deleteEmployee('${emp.codigo}','${emp.empleado.replace(/'/g,"\\'")}')" style="color:#dc2626">🗑️</button>` : ''}</td>
+        <td>${userRole==='admin' ? `<button class="btn btn-outline btn-sm" onclick="deleteEmployee('${emp.codigo}','${emp.empleado.replace(/'/g,"\\'")}')" style="color:#FF2D55">🗑️</button>` : ''}</td>
       </tr>`;
     }
     html += '</tbody></table>';
@@ -561,7 +573,7 @@ function renderEmployeeView() {
 
   document.getElementById('table-wrap').innerHTML = html;
   if ((!window._selectedEmp && sorted.length === 0) || (window._selectedEmp && !empMap[window._selectedEmp])) {
-    document.getElementById('table-wrap').innerHTML = '<div style="padding:2rem;text-align:center;color:#94a3b8">Sin registros para esta vista.</div>';
+    document.getElementById('table-wrap').innerHTML = '<div style="padding:2rem;text-align:center;color:#757575">Sin registros para esta vista.</div>';
   }
 }
 
@@ -612,8 +624,8 @@ function handleFile(file) {
       if (json.length === 0) return alert('El archivo está vacío');
       uploadedHeaders = Object.keys(json[0]);
       uploadedRows = json;
-      document.getElementById('upload-body').innerHTML = `<div style="font-size:.8rem;color:#64748b;margin-bottom:.5rem">Archivo: ${file.name} (${json.length} filas)</div>`;
-      document.getElementById('map-config').innerHTML = `<div style="font-size:.75rem;color:#64748b;margin-bottom:.5rem">Columnas detectadas: ${uploadedHeaders.join(', ')}</div>`;
+      document.getElementById('upload-body').innerHTML = `<div style="font-size:.8rem;color:#B5B5B5;margin-bottom:.5rem">Archivo: ${file.name} (${json.length} filas)</div>`;
+      document.getElementById('map-config').innerHTML = `<div style="font-size:.75rem;color:#B5B5B5;margin-bottom:.5rem">Columnas detectadas: ${uploadedHeaders.join(', ')}</div>`;
       document.getElementById('upload-actions').innerHTML = `<button class="btn btn-success" onclick="confirmImport()">Confirmar importacion</button> <button class="btn btn-outline" onclick="closeModal('upload-modal')">Cancelar</button>`;
     } catch(err) { alert('Error al leer archivo: '+err.message); }
   };
